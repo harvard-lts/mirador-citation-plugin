@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import CollapsibleSection from 'mirador/dist/es/src/containers/CollapsibleSection';
 import SanitizedHtml from 'mirador/dist/es/src/containers/SanitizedHtml';
+import { PluginHook } from 'mirador/dist/es/src/components/PluginHook';
+import ns from 'mirador/dist/es/src/config/css-ns';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -55,16 +57,20 @@ export default class RelatedLinksSidePanel extends Component {
     return (
         <CompanionWindow
           title="Related Links"
+          paperClassName={ns('related-links-panel')}
           windowId={windowId}
           id={id}
         > 
-            <Typography variant="body1">
-            <SanitizedHtml htmlString={relatedLinksTitle} ruleSet="iiif" />
+          <dl className={classes.relatedLinksIntro}>
+            <Typography variant="body1" component="dd">
+              <SanitizedHtml htmlString={relatedLinksTitle} ruleSet="iiif" />
             </Typography>
-
-            <Typography variant="body1">
-            <SanitizedHtml htmlString={relatedLinksIntro} ruleSet="iiif" />
+          </dl>
+          <dl className={classes.relatedLinksIntro}>
+            <Typography variant="body1" component="dd">
+              <SanitizedHtml htmlString={relatedLinksIntro} ruleSet="iiif" />
             </Typography>
+          </dl>
 
           <Typography
             aria-labelledby={
@@ -116,12 +122,14 @@ export default class RelatedLinksSidePanel extends Component {
                 </CollapsibleSection>
               </div>
             }
+            <PluginHook {...this.props} />
         </CompanionWindow>
     );
   }
 }
 
 RelatedLinksSidePanel.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string),
   id: PropTypes.string.isRequired,
   index: PropTypes.number,
   manifestId: PropTypes.string.isRequired,
@@ -129,6 +137,7 @@ RelatedLinksSidePanel.propTypes = {
 };
 
 RelatedLinksSidePanel.defaultProps = {
+  classes: {},
   manifestId: null,
   citationAPI: null,
   index: 1,

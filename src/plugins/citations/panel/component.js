@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
 import CollapsibleSection from 'mirador/dist/es/src/containers/CollapsibleSection';
 import SanitizedHtml from 'mirador/dist/es/src/containers/SanitizedHtml';
+import { PluginHook } from 'mirador/dist/es/src/components/PluginHook';
+import ns from 'mirador/dist/es/src/config/css-ns';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -13,7 +15,6 @@ export default class CitationSidePanel extends Component {
     super(props);
     const { manifestId, citationAPI, manifestTitle } = this.props;
     this.state = {
-      hasOcr: false,
       manifestId: manifestId,
       citationAPI: citationAPI,
       manifestTitle: manifestTitle,
@@ -51,17 +52,19 @@ export default class CitationSidePanel extends Component {
       manifestTitle,
      } = this.props;
     const { citationData, loading, error } = this.state;
-    console.log('windowId: ', windowId);
     let citationsIntro = 'Please note that a complete citation may require additional information (document date, author name, range of pages/sequence numbers, etc.)';
     return (
         <CompanionWindow
           title="Citation"
+          paperClassName={ns('attribution-panel')}
           windowId={windowId}
           id={id}
         >
-          <Typography variant="body1">
+          <dl className={classes.citationIntro}>
+          <Typography variant="body1" component="dd">
             <SanitizedHtml htmlString={citationsIntro} ruleSet="iiif" />
           </Typography>
+          </dl>
 
           <Typography
             aria-labelledby={
@@ -116,12 +119,14 @@ export default class CitationSidePanel extends Component {
                 </CollapsibleSection>
               </div>
             }
+            <PluginHook {...this.props} />
         </CompanionWindow>
     );
   }
 }
 
 CitationSidePanel.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string),
   id: PropTypes.string.isRequired,
   index: PropTypes.number,
   manifestId: PropTypes.string.isRequired,
@@ -130,6 +135,7 @@ CitationSidePanel.propTypes = {
 };
 
 CitationSidePanel.defaultProps = {
+  classes: {},
   manifestId: null,
   citationAPI: null,
   manifestTitle: null,

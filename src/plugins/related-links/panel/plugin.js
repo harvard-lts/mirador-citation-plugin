@@ -1,11 +1,24 @@
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import RelatedLinksSidePanel from './component';
 import { withStyles } from '@material-ui/core/styles';
+import { withTranslation } from 'react-i18next';
 import { getManifestTitle } from 'mirador/dist/es/src/state/selectors';
 
-const styles = () => ({
-  citationItem: {
-    "padding-bottom": 0,
-  }
+const styles = theme => ({
+  section: {
+    borderBottom: `.5px solid ${theme.palette.section_divider}`,
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+  },
+  relatedLinksIntro: {
+    paddingBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+  },
 });
 
 const mapStateToProps = (state, { id, windowId }) => ({
@@ -14,8 +27,13 @@ const mapStateToProps = (state, { id, windowId }) => ({
   manifestTitle: getManifestTitle(state, { windowId }),
 });
 
+const enhance = compose(
+  withTranslation(),
+  withStyles(styles),
+  connect(mapStateToProps),
+);
+
 export default {
-  component: withStyles(styles)(RelatedLinksSidePanel),
+  component: enhance(RelatedLinksSidePanel),
   companionWindowKey: 'RelatedLinksKey',
-  mapStateToProps: mapStateToProps
 };

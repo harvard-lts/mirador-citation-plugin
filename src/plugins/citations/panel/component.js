@@ -6,9 +6,8 @@ import SanitizedHtml from 'mirador/dist/es/src/containers/SanitizedHtml';
 import { PluginHook } from 'mirador/dist/es/src/components/PluginHook';
 import ns from 'mirador/dist/es/src/config/css-ns';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import { CitationListItem } from '../../../components/CitationListItem';
 
 export default class CitationSidePanel extends Component {
   constructor(props) {
@@ -85,36 +84,11 @@ export default class CitationSidePanel extends Component {
                   label={'resource'}
                 >
                   <List>
-                      <ListItem>
-                      <ListItemText
-                        primary="Persistent Link:"
-                        secondary={citationData.resource_persistent_link}
-                      />
-                      </ListItem>
-                      <ListItem>
-                      <ListItemText
-                        primary="Description:"
-                        secondary={manifestTitle}
-                      />
-                      </ListItem>
-                      <ListItem>
-                      <ListItemText
-                        primary="Repository:"
-                        secondary={citationData.repository}
-                      />
-                      </ListItem>
-                      <ListItem>
-                      <ListItemText
-                        primary="Institution:"
-                        secondary={citationData.institution}
-                      />
-                      </ListItem>
-                      <ListItem>
-                      <ListItemText
-                        primary="Accessed:"
-                        secondary={citationData.access_date}
-                      />
-                      </ListItem>
+                      <CitationListItem primary="Persistent Link:" secondary={citationData.resource_persistent_link}/>
+                      <CitationListItem primary="Description:" secondary={manifestTitle}/>
+                      <CitationListItem primary="Repository:" secondary={citationData.repository}/>
+                      <CitationListItem primary="Institution:" secondary={citationData.institution}/>
+                      <CitationListItem primary="Accessed:" secondary={citationData.access_date}/>
                   </List>
                 </CollapsibleSection>
               </div>

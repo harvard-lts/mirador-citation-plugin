@@ -10,7 +10,7 @@ export function CitationListItem({
     secondary,
     i,
   }) {
-
+  if (primary !== undefined && secondary !== undefined) {
     if (isValidUrl(secondary)) {
         return (
           <ListItem button component={Link} href={secondary} target="_blank" rel="noopener" key={i}>
@@ -25,6 +25,10 @@ export function CitationListItem({
         </ListItem>
         );
     }
+  }
+  else {
+    return null;
+  }
 }
   
 CitationListItem.propTypes = {

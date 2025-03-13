@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CompanionWindow from 'mirador/dist/es/src/containers/CompanionWindow';
-import CollapsibleSection from 'mirador/dist/es/src/containers/CollapsibleSection';
 import SanitizedHtml from 'mirador/dist/es/src/containers/SanitizedHtml';
 import { PluginHook } from 'mirador/dist/es/src/components/PluginHook';
 import ns from 'mirador/dist/es/src/config/css-ns';
-import Link from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import { CitationSection } from '../../../components/CitationSection';
 export default class RelatedLinksSidePanel extends Component {
   constructor(props) {
     super(props);
@@ -83,43 +79,11 @@ export default class RelatedLinksSidePanel extends Component {
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
           </Typography>
-
+            
             {citationData &&
               <div className={classes.section}>
-                <CollapsibleSection
-                  id={`${id}-harvard-metadata`}
-                  label={'harvard metadata'}
-                >
-                  <List>
-                    {
-                        citationData.harvard_metadata_links.map((metadataLink, i) =>
-                            <ListItem button component={Link} href={metadataLink.link} target="_blank" rel="noopener" key={i}>
-                            <ListItemText
-                            primary={metadataLink.label}
-                            secondary={metadataLink.link}
-                            />
-                            </ListItem>
-                        )
-                    }
-                  </List>
-                </CollapsibleSection>
-                <CollapsibleSection
-                  id={`${id}-related-links`}
-                  label={'related links'}
-                >
-                  <List>
-                  {
-                        citationData.related_links.map((relatedLink, i) =>
-                            <ListItem button component={Link} href={relatedLink.link} target="_blank" rel="noopener" key={i}>
-                            <ListItemText
-                            primary={relatedLink.label}
-                            secondary={relatedLink.link}
-                            />
-                            </ListItem>
-                        )
-                    }
-                  </List>
-                </CollapsibleSection>
+                <CitationSection id='harvard-metadata' label='harvard metadata' links={citationData.harvard_metadata_links}/>
+                <CitationSection id='related-links' label='related links' links={citationData.related_links}/>
               </div>
             }
             <PluginHook {...this.props} />

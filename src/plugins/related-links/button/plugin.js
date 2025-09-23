@@ -21,29 +21,63 @@ class RelatedLinksButton extends Component {
       manifestId: manifestId,
       citationAPI: citationAPI,
       manifestTitle: manifestTitle,
+      citationData: null,
+      loading: true,
+      error: null,
     };
   }
   async componentDidMount() {
     const { manifestId, citationAPI, manifestTitle } = this.state;
+    
+    // Only fetch if we have the required data
+    if (manifestId && citationAPI) {
+      this.fetchRelatedLinksData(manifestId, citationAPI);
+    } else {
+      console.log('RelatedLinksButton: manifestId or citationAPI not available yet', { manifestId, citationAPI });
+    }
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    // Check if props changed and update state accordingly
+    const { manifestId: newManifestId, citationAPI: newCitationAPI, manifestTitle: newManifestTitle } = this.props;
+    const { manifestId: prevManifestId, citationAPI: prevCitationAPI } = prevState;
+    
+    // Update state if props changed
+    if (newManifestId !== prevManifestId || newCitationAPI !== prevCitationAPI || newManifestTitle !== prevState.manifestTitle) {
+      this.setState({
+        manifestId: newManifestId,
+        citationAPI: newCitationAPI,
+        manifestTitle: newManifestTitle,
+      });
+    }
+    
+    // Check if manifestId or citationAPI became available and fetch data
+    const { manifestId, citationAPI } = this.state;
+    if ((manifestId !== prevManifestId || citationAPI !== prevCitationAPI) && manifestId && citationAPI) {
+      this.fetchRelatedLinksData(manifestId, citationAPI);
+    }
+  }
+
+  fetchRelatedLinksData = async (manifestId, citationAPI) => {
     const body = { "manifest_id": manifestId };
-    fetch(citationAPI, {
-      method: 'post',
-      body: JSON.stringify(body),
-      headers: {'Content-Type': 'application/json'}
-    })
-      .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(citationData => {
-        this.setState({ citationData, loading: false });
-      })
-      .catch(error => {
-        console.error('There was a problem receiving the citation:', error);
-        this.setState({ loading: false, error: error.message });
-    });
+    
+    try {
+      const response = await fetch(citationAPI, {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: {'Content-Type': 'application/json'}
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const citationData = await response.json();
+      this.setState({ citationData, loading: false });
+    } catch (error) {
+      console.error('There was a problem receiving the related links:', error);
+      this.setState({ loading: false, error: error.message });
+    }
   }
   render() {
     const { classes, 
@@ -90,10 +124,14 @@ class RelatedLinksButton extends Component {
 RelatedLinksButton.value = 'RelatedLinksKey';
 
 const mapStateToProps = (state, { windowId }) => {
+  console.log('RelatedLinksButton mapStateToProps windowId=', windowId);
+  console.log('RelatedLinksButton mapStateToProps state=', state);
 
   const manifestId = getManifestUrl(state, { windowId });
   const citationAPI = state.config.miradorCitationPlugin?.citationAPI;
   const manifestTitle = getManifestTitle(state, { windowId });
+
+  console.log('RelatedLinksButton mapStateToProps extracted values:', { manifestId, citationAPI, manifestTitle });
 
   return {
     manifestId: manifestId,

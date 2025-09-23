@@ -7,21 +7,38 @@ document.addEventListener("DOMContentLoaded", () => {
     windows: [
       {
         manifestId: "https://nrs.lib.harvard.edu/URN-3:FHCL:37563741:MANIFEST:3",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
       },
       {
         manifestId: "https://iiif.io/api/cookbook/recipe/0036-composition-from-multiple-images/manifest.json",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
       },
       {
         manifestId: "https://api.dc.library.northwestern.edu/api/v2/works/1bc233eb-4bb5-4439-9456-d567aaf7977b?as=iiif",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
       }, 
       {
         manifestId: "https://media.getty.edu/iiif/manifest/fb9efb54-09dd-42bb-837c-2d27f797cfb2",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
       },
       {
         manifestId: "https://nrs.lib.harvard.edu/URN-3:HUL.GUEST:101907912:MANIFEST:3",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
       },
       {
         manifestId: "https://nrs.lib.harvard.edu/URN-3:HLS.LIBR:102621314:MANIFEST:3",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
+      },
+      {
+        manifestId: "https://mps.lib.harvard.edu/iiif/3/urn-3:HUAM:93_122_36a",
+        sideBarOpen: true,
+        xsideBarPanel: 'info',
       },
     ],
     miradorCitationPlugin: {

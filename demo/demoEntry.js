@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         xsideBarPanel: 'info',
       },
       {
-        manifestId: "https://mps.lib.harvard.edu/iiif/3/urn-3:HUAM:93_122_36a",
+        manifestId: "https://nrs.harvard.edu/URN-3:HUAM:93_122_36A:MANIFEST:3",
         sideBarOpen: true,
         xsideBarPanel: 'info',
       },

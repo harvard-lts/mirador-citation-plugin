@@ -124,15 +124,9 @@ class RelatedLinksButton extends Component {
 RelatedLinksButton.value = 'RelatedLinksKey';
 
 const mapStateToProps = (state, { windowId }) => {
-  console.log('RelatedLinksButton mapStateToProps windowId=', windowId);
-  console.log('RelatedLinksButton mapStateToProps state=', state);
-
   const manifestId = getManifestUrl(state, { windowId });
   const citationAPI = state.config.miradorCitationPlugin?.citationAPI;
   const manifestTitle = getManifestTitle(state, { windowId });
-
-  console.log('RelatedLinksButton mapStateToProps extracted values:', { manifestId, citationAPI, manifestTitle });
-
   return {
     manifestId: manifestId,
     citationAPI: citationAPI,

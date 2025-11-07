@@ -8,8 +8,12 @@ import { getManifestTitle, getManifestUrl } from 'mirador/dist/es/src/state/sele
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  hideRelatedLinksButton: {
-    display: 'none',
+  hiddenButton: {
+    display: 'none !important',
+    // Hide the parent tab button when related links data is not available
+    '& ~ button': {
+      display: 'none !important',
+    },
   },
 });
 
@@ -80,43 +84,47 @@ class RelatedLinksButton extends Component {
     }
   }
   render() {
-    const { classes, 
-      windowId,
-     } = this.props;
+    const { classes, windowId } = this.props;
     const { citationData, loading, error } = this.state;
-    if (citationData) {
-      if (!citationData.error) {
-        return (
-          <div>
-            <RelatedLinksIcon />
-          </div>
-        );
-      }
-      else {
-        return (
-          <div className={classes.hideRelatedLinksButton}>
-            <style>
-              {`
-              section[id="`+windowId+`"] button[title="Related Links"] { display: none }
-              `}
-            </style>
-            <Icon />
-          </div>
-        );
-      }
-    }
-    else {
+    
+    // Don't render anything while loading
+    if (loading) {
       return (
-        <div className={classes.hideRelatedLinksButton}>
-            <style>
-              {`
-              section[id="`+windowId+`"] button[title="Related Links"] { display: none }
-              `}
-            </style>
-          <Icon />
+        <div className={classes.hiddenButton}>
+          <style>
+            {`
+            section[id="${windowId}"] button[title="Related Links"] { 
+              display: none !important;
+              pointer-events: none !important;
+            }
+            `}
+          </style>
         </div>
       );
     }
+    
+    // Don't render anything if there's an error or no citation data
+    if (error || !citationData || citationData.error) {
+      return (
+        <div className={classes.hiddenButton}>
+          <style>
+            {`
+            section[id="${windowId}"] button[title="Related Links"] { 
+              display: none !important;
+              pointer-events: none !important;
+            }
+            `}
+          </style>
+        </div>
+      );
+    }
+    
+    // Only render the button if we have valid citation data
+    return (
+      <div>
+        <RelatedLinksIcon />
+      </div>
+    );
   }
 
 }

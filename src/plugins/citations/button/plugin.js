@@ -8,9 +8,10 @@ import { getManifestTitle, getManifestUrl } from 'mirador/dist/es/src/state/sele
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  hideCitationButton: {
-    display: 'none',
-    '& button': {
+  hiddenButton: {
+    display: 'none !important',
+    // Hide the parent tab button when citation data is not available
+    '& ~ button': {
       display: 'none !important',
     },
   },
@@ -83,43 +84,47 @@ class CitationButton extends Component {
     }
   }
   render() {
-    const { classes, 
-      windowId,
-     } = this.props;
+    const { classes, windowId } = this.props;
     const { citationData, loading, error } = this.state;
-    if (citationData) {
-      if (!citationData.error) {
-        return (
-          <div>
-            <CitationIcon />
-          </div>
-        );
-      }
-      else {
-        return (
-          <div className={classes.hideCitationButton}>
-            <style>
-              {`
-              section[id="`+windowId+`"] button[title="Cite"] { display: none !important }
-              `}
-            </style>
-            <Icon />
-          </div>
-        );
-      }
-    }
-    else {
+    
+    // Don't render anything while loading
+    if (loading) {
       return (
-        <div className={classes.hideCitationButton}>
-            <style>
-              {`
-              section[id="`+windowId+`"] button[title="Cite"] { display: none !important }
-              `}
-            </style>
-          <Icon />
+        <div className={classes.hiddenButton}>
+          <style>
+            {`
+            section[id="${windowId}"] button[title="Cite"] { 
+              display: none !important;
+              pointer-events: none !important;
+            }
+            `}
+          </style>
         </div>
       );
     }
+    
+    // Don't render anything if there's an error or no citation data
+    if (error || !citationData || citationData.error) {
+      return (
+        <div className={classes.hiddenButton}>
+          <style>
+            {`
+            section[id="${windowId}"] button[title="Cite"] { 
+              display: none !important;
+              pointer-events: none !important;
+            }
+            `}
+          </style>
+        </div>
+      );
+    }
+    
+    // Only render the button if we have valid citation data
+    return (
+      <div>
+        <CitationIcon />
+      </div>
+    );
   }
 
 }

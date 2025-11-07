@@ -10,6 +10,9 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   hideCitationButton: {
     display: 'none',
+    '& button': {
+      display: 'none !important',
+    },
   },
 });
 
@@ -97,7 +100,7 @@ class CitationButton extends Component {
           <div className={classes.hideCitationButton}>
             <style>
               {`
-              section[id="`+windowId+`"] button[title="Cite"] { display: none }
+              section[id="`+windowId+`"] button[title="Cite"] { display: none !important }
               `}
             </style>
             <Icon />
@@ -110,7 +113,7 @@ class CitationButton extends Component {
         <div className={classes.hideCitationButton}>
             <style>
               {`
-              section[id="`+windowId+`"] button[title="Cite"] { display: none }
+              section[id="`+windowId+`"] button[title="Cite"] { display: none !important }
               `}
             </style>
           <Icon />
